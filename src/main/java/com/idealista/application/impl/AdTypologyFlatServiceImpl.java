@@ -1,5 +1,6 @@
-package com.idealista.application;
+package com.idealista.application.impl;
 
+import com.idealista.application.TypeTypology;
 import com.idealista.domain.Constants;
 import com.idealista.domain.Typology;
 import org.springframework.stereotype.Service;

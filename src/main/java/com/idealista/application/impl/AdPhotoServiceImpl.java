@@ -1,5 +1,6 @@
-package com.idealista.application;
+package com.idealista.application.impl;
 
+import com.idealista.application.TypeAd;
 import com.idealista.domain.Ad;
 import com.idealista.domain.Constants;
 import com.idealista.domain.Quality;
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 @Service ("photo")
-public class AdPhotoServiceImpl implements  TypeAd {
+public class AdPhotoServiceImpl implements TypeAd {
 
     private TypeAd chain;
 

@@ -1,5 +1,6 @@
-package com.idealista.application;
+package com.idealista.application.impl;
 
+import com.idealista.application.TypeAd;
 import com.idealista.domain.Ad;
 import com.idealista.domain.Constants;
 import org.springframework.stereotype.Service;

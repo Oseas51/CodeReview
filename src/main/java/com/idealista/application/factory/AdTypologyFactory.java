@@ -1,5 +1,6 @@
-package com.idealista.application;
+package com.idealista.application.factory;
 
+import com.idealista.application.TypeTypology;
 import com.idealista.domain.Typology;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

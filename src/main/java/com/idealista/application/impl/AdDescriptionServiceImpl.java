@@ -1,5 +1,7 @@
-package com.idealista.application;
+package com.idealista.application.impl;
 
+import com.idealista.application.TypeAd;
+import com.idealista.application.factory.AdTypologyFactory;
 import com.idealista.domain.Ad;
 import com.idealista.domain.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +27,8 @@ public class AdDescriptionServiceImpl implements TypeAd {
         if (optDesc.isPresent() && !optDesc.get().isEmpty()) {
             String description = optDesc.get();
             score += Constants.FIVE;
-            ad.setScore(ad.getScore() + score );
             List<String> wds = Arrays.asList(description.split(" ")); //número de palabras
             score += adTypologyFactory.findTypology(ad.getTypology()).calculateScore(Arrays.asList(description.split(" ")));
-            ad.setScore(ad.getScore() + score );
             score +=  wds.stream().filter(words -> Arrays.asList("luminoso", "nuevo", "céntrico" , "reformado" , "ático").
                         contains(words)).mapToInt(i -> Constants.FIVE).sum();
             ad.setScore(ad.getScore() + score );

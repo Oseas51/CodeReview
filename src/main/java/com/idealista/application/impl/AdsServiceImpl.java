@@ -1,5 +1,7 @@
-package com.idealista.application;
+package com.idealista.application.impl;
 
+import com.idealista.application.AdsService;
+import com.idealista.application.TypeAd;
 import com.idealista.domain.*;
 import com.idealista.infrastructure.api.PublicAd;
 import com.idealista.infrastructure.api.QualityAd;
@@ -16,7 +18,7 @@ public class AdsServiceImpl implements AdsService {
     private  AdRepository adRepository;
 
     @Autowired
-    private  TypeAd photo;
+    private TypeAd photo;
 
     @Autowired
     private  TypeAd description;
@@ -56,28 +58,19 @@ public class AdsServiceImpl implements AdsService {
 
         int score = Constants.ZERO;
 
-        /*TypeAd photo = new AdPhotoServiceImpl();
-        TypeAd description = new AdDescriptionServiceImpl();*/
-
-        // calculate Store by features photos
-
         photo.setNextChain(description);
         description.setNextChain(complete);
         photo.calculateStore(ad);
 
-
         if (ad.getScore() < Constants.ZERO) {
             ad.setScore(Constants.ZERO);
         }
-
         if (ad.getScore() > Constants.ONE_HUNDRED) {
             ad.setScore(Constants.ONE_HUNDRED);
         }
-
         if (ad.getScore() < Constants.FORTY) {
             ad.setIrrelevantSince(new Date());
         }
-
         adRepository.save(ad);
     }
 

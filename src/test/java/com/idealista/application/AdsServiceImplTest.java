@@ -1,7 +1,8 @@
 package com.idealista.application;
 
+import com.idealista.application.factory.AdTypologyFactory;
+import com.idealista.application.impl.AdsServiceImpl;
 import com.idealista.domain.*;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -10,7 +11,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AdsServiceImplTest {
@@ -30,7 +30,7 @@ class AdsServiceImplTest {
     @InjectMocks
     private AdsServiceImpl scoreService;
 
-   /* @Test
+/*    @Test
     public void calculateScoresTest() {
 
         when(adRepository.findAllAds()).thenReturn(Arrays.asList(relevantAd()));
