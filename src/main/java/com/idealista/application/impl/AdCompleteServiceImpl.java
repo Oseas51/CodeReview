@@ -3,23 +3,18 @@ package com.idealista.application.impl;
 import com.idealista.application.TypeAd;
 import com.idealista.domain.Ad;
 import com.idealista.domain.Constants;
-import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 
-@Service("complete")
-public class AdCompleteServiceImpl implements TypeAd {
+@Slf4j
+public class AdCompleteServiceImpl extends TypeAd {
 
-    private TypeAd chain;
-
-    @Override
-    public void calculateStore(Ad ad) {
-        if (ad.isComplete()) {
-            ad.setScore(ad.getScore() +  Constants.FORTY );
-        }
-    }
+    public AdCompleteServiceImpl() {
+		super(null);
+	}
 
     @Override
-    public void setNextChain(TypeAd nextChain) {
-        this.chain = nextChain;
+    public void calculateScore(Ad ad) {
+        ad.setScore(ad.isComplete() ? ad.getScore() +  Constants.FORTY : ad.getScore());
+        checkNext(null);
     }
-
 }

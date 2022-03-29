@@ -1,18 +1,22 @@
 package com.idealista.application.impl;
 
-import com.idealista.application.AdsService;
-import com.idealista.application.TypeAd;
-import com.idealista.application.factory.TypeAdFactory;
-import com.idealista.domain.*;
-import com.idealista.infrastructure.api.PublicAd;
-import com.idealista.infrastructure.api.QualityAd;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.google.gson.Gson;
+import lombok.Generated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.idealista.application.AdsService;
+import com.idealista.application.factory.TypeAdFactory;
+import com.idealista.domain.Ad;
+import com.idealista.domain.AdRepository;
+import com.idealista.domain.Picture;
+import com.idealista.infrastructure.api.PublicAd;
+import com.idealista.infrastructure.api.QualityAd;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -45,6 +49,9 @@ public class AdsServiceImpl implements AdsService {
     @Override
     public void calculateScores() {
 
+        log.info(new Gson().toJson(adRepository
+                .findAllAds()));
+
         adRepository
                 .findAllAds()
                 .forEach(this::calculateScore);
@@ -53,20 +60,11 @@ public class AdsServiceImpl implements AdsService {
     private void calculateScore(Ad ad) {
 
         log.debug("Calculate Score Ad {} " , ad.toString());
-
-        TypeAd typeAdPhoto= typeAdFactory.getPhotoService();
-        TypeAd typeAdDescription=typeAdFactory.getDescriptionService();
-        TypeAd typeAdComplete=typeAdFactory.getCompleteService();
-
-        typeAdPhoto.setNextChain(typeAdFactory.getDescriptionService());
-        typeAdDescription.setNextChain(typeAdComplete);
-        typeAdPhoto.calculateStore(ad);
+        log.info(new Gson().toJson(ad));
+        typeAdFactory.calculate(ad);
 
         adRepository.save(ad.calculateAdFinal());
 
         log.info("Calculate Score {} to  Ad {} " , ad.getScore() , ad.toString());
-
     }
-
-
 }

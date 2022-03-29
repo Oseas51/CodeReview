@@ -2,10 +2,19 @@ package com.idealista.application;
 
 import com.idealista.domain.Ad;
 
-public interface TypeAd {
+public abstract class TypeAd {
 
-    public abstract void calculateStore(Ad ad);
+    protected TypeAd chain;
 
-    void setNextChain(TypeAd nextChain);
+    public abstract void calculateScore(Ad ad);
 
+    protected TypeAd(TypeAd next) {
+        this.chain = next;
+    }
+
+    protected void checkNext(Ad ad) {
+        if (null != chain && null != ad) {
+            chain.calculateScore(ad);
+        }
+    }
 }
