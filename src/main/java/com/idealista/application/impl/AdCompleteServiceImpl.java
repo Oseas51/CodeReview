@@ -12,11 +12,9 @@ public class AdCompleteServiceImpl implements TypeAd {
 
     @Override
     public void calculateStore(Ad ad) {
-        int score = 0;
         if (ad.isComplete()) {
             ad.setScore(ad.getScore() +  Constants.FORTY );
         }
-
     }
 
     @Override

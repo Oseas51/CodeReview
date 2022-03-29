@@ -2,35 +2,31 @@ package com.idealista.application.impl;
 
 import com.idealista.application.AdsService;
 import com.idealista.application.TypeAd;
+import com.idealista.application.factory.TypeAdFactory;
 import com.idealista.domain.*;
 import com.idealista.infrastructure.api.PublicAd;
 import com.idealista.infrastructure.api.QualityAd;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class AdsServiceImpl implements AdsService {
 
     @Autowired
     private  AdRepository adRepository;
 
     @Autowired
-    private TypeAd photo;
-
-    @Autowired
-    private  TypeAd description;
-
-    @Autowired
-    private  TypeAd complete;
+    private TypeAdFactory typeAdFactory;
 
     @Override
     public List<PublicAd> findPublicAds() {
         List<Ad> ads = adRepository.findRelevantAds();
-         ads.sort(Comparator.comparing(Ad::getScore));
-
          return   ads.stream().map(a->new PublicAd(a.getId(),a.getTypology().toString(),
                 a.getDescription(), a.getPictures().stream().map(Picture::getUrl).collect(Collectors.toList()),
                 a.getHouseSize(),a.getGardenSize())).collect(Collectors.toList());
@@ -56,22 +52,20 @@ public class AdsServiceImpl implements AdsService {
 
     private void calculateScore(Ad ad) {
 
-        int score = Constants.ZERO;
+        log.debug("Calculate Score Ad {} " , ad.toString());
 
-        photo.setNextChain(description);
-        description.setNextChain(complete);
-        photo.calculateStore(ad);
+        TypeAd typeAdPhoto= typeAdFactory.getPhotoService();
+        TypeAd typeAdDescription=typeAdFactory.getDescriptionService();
+        TypeAd typeAdComplete=typeAdFactory.getCompleteService();
 
-        if (ad.getScore() < Constants.ZERO) {
-            ad.setScore(Constants.ZERO);
-        }
-        if (ad.getScore() > Constants.ONE_HUNDRED) {
-            ad.setScore(Constants.ONE_HUNDRED);
-        }
-        if (ad.getScore() < Constants.FORTY) {
-            ad.setIrrelevantSince(new Date());
-        }
-        adRepository.save(ad);
+        typeAdPhoto.setNextChain(typeAdFactory.getDescriptionService());
+        typeAdDescription.setNextChain(typeAdComplete);
+        typeAdPhoto.calculateStore(ad);
+
+        adRepository.save(ad.calculateAdFinal());
+
+        log.info("Calculate Score {} to  Ad {} " , ad.getScore() , ad.toString());
+
     }
 
 

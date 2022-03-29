@@ -63,7 +63,7 @@ public class InMemoryPersistence implements AdRepository {
     public List<Ad> findRelevantAds() {
         return ads
                 .stream()
-                .filter(x -> x.getScore() >= Constants.FORTY)
+                .filter(x -> x.getScore() >= Constants.FORTY).sorted()
                 .map(this::mapToDomain)
                 .collect(Collectors.toList());
     }

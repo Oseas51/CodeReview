@@ -6,6 +6,7 @@ import com.idealista.domain.Ad;
 import com.idealista.domain.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,10 +29,12 @@ public class AdDescriptionServiceImpl implements TypeAd {
             String description = optDesc.get();
             score += Constants.FIVE;
             List<String> wds = Arrays.asList(description.split(" ")); //número de palabras
-            score += adTypologyFactory.findTypology(ad.getTypology()).calculateScore(Arrays.asList(description.split(" ")));
-            score +=  wds.stream().filter(words -> Arrays.asList("luminoso", "nuevo", "céntrico" , "reformado" , "ático").
+            if(!CollectionUtils.isEmpty(wds)) {
+                score += adTypologyFactory.findTypology(ad.getTypology()).calculateScore(wds);
+                score += wds.stream().filter(words -> Arrays.asList("luminoso", "nuevo", "céntrico", "reformado", "ático").
                         contains(words)).mapToInt(i -> Constants.FIVE).sum();
-            ad.setScore(ad.getScore() + score );
+                ad.setScore(ad.getScore() + score);
+            }
         }
         this.chain.calculateStore(ad);
     }

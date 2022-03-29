@@ -16,11 +16,12 @@ public class AdPhotoServiceImpl implements TypeAd {
     public void calculateStore(Ad ad) {
 
         ad.setScore(Integer.valueOf(0));
+
         if (CollectionUtils.isEmpty(ad.getPictures())) {
             ad.setScore(ad.getScore() - Constants.TEN );
 
         }else{
-            ad.setScore(ad.getScore() - ad.getPictures().stream().mapToInt(picture -> Quality.HD.equals(picture.getQuality()) ? Constants.TWENTY : Constants.TEN).sum());
+            ad.setScore(ad.getScore() + ad.getPictures().stream().mapToInt(picture -> Quality.HD.equals(picture.getQuality()) ? Constants.TWENTY : Constants.TEN).sum());
         }
 
         this.chain.calculateStore(ad);

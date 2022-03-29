@@ -18,7 +18,7 @@ public class Ad {
     private List<Picture> pictures;
     private Integer houseSize;
     private Integer gardenSize;
-    private Integer score;
+    private Integer score ;
     private Date irrelevantSince;
 
 
@@ -26,6 +26,21 @@ public class Ad {
         return (Typology.GARAGE.equals(typology) && !pictures.isEmpty())
                 || (Typology.FLAT.equals(typology) && !pictures.isEmpty() && description != null && !description.isEmpty() && houseSize != null)
                 || (Typology.CHALET.equals(typology) && !pictures.isEmpty() && description != null && !description.isEmpty() && houseSize != null && gardenSize != null);
+    }
+
+    public Ad calculateAdFinal(){
+
+        if (this.getScore() < Constants.ZERO) {
+            this.setScore(Constants.ZERO);
+        }
+        else if (this.getScore() > Constants.ONE_HUNDRED) {
+            this.setScore(Constants.ONE_HUNDRED);
+        }
+        if (this.getScore() < Constants.FORTY) {
+            this.setIrrelevantSince(new Date());
+        }
+
+        return this;
     }
 
 
