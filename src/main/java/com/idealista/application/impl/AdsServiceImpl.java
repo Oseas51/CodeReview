@@ -49,9 +49,6 @@ public class AdsServiceImpl implements AdsService {
     @Override
     public void calculateScores() {
 
-        log.info(new Gson().toJson(adRepository
-                .findAllAds()));
-
         adRepository
                 .findAllAds()
                 .forEach(this::calculateScore);
@@ -60,11 +57,8 @@ public class AdsServiceImpl implements AdsService {
     private void calculateScore(Ad ad) {
 
         log.debug("Calculate Score Ad {} " , ad.toString());
-        log.info(new Gson().toJson(ad));
         typeAdFactory.calculate(ad);
-
-        adRepository.save(ad.calculateAdFinal());
-
+        adRepository.save(ad);
         log.info("Calculate Score {} to  Ad {} " , ad.getScore() , ad.toString());
     }
 }

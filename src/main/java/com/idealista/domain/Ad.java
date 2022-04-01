@@ -28,19 +28,10 @@ public class Ad {
                 || (Typology.CHALET.equals(typology) && !pictures.isEmpty() && description != null && !description.isEmpty() && houseSize != null && gardenSize != null);
     }
 
-    public Ad calculateAdFinal(){
+    public void calculateAdFinal(){
 
-        if (this.getScore() < Constants.ZERO) {
-            this.setScore(Constants.ZERO);
-        }
-        else if (this.getScore() > Constants.ONE_HUNDRED) {
-            this.setScore(Constants.ONE_HUNDRED);
-        }
-        if (this.getScore() < Constants.FORTY) {
-            this.setIrrelevantSince(new Date());
-        }
-
-        return this;
+        setScore(getScore() < Constants.ZERO ? Constants.ZERO : getScore() > Constants.ONE_HUNDRED ? Constants.ONE_HUNDRED : getScore());
+        setIrrelevantSince(getScore() <  Constants.FORTY? new Date(): null );
     }
 
 

@@ -15,6 +15,7 @@ public class AdCompleteServiceImpl extends TypeAd {
     @Override
     public void calculateScore(Ad ad) {
         ad.setScore(ad.isComplete() ? ad.getScore() +  Constants.FORTY : ad.getScore());
+        ad.calculateAdFinal();
         checkNext(null);
     }
 }

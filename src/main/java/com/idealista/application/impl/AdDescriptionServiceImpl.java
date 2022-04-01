@@ -21,7 +21,7 @@ public class AdDescriptionServiceImpl extends TypeAd {
     }
 
     @Autowired
-    AdTypologyFactory adTypologyFactory;
+    private AdTypologyFactory adTypologyFactory;
 
     @Override
     public void calculateScore(Ad ad) {
@@ -39,4 +39,5 @@ public class AdDescriptionServiceImpl extends TypeAd {
         }
         checkNext(ad);
     }
+
 }
